@@ -1,0 +1,82 @@
+@startuml
+skinparam classAttributeIconSize 0
+left to right direction
+
+' Clases
+
+class EmpresaMedios {
+  - nif: String
+  - nombre: String
+  - director: String
+  - direccionPostal: String
+}
+
+class CadenaRadio {
+  - nombre: String
+  - director: String
+  - sedeCentral: Emisora
+}
+
+class Emisora {
+  - nif: String
+  - nombre: String
+  - direccionPostal: String
+  - director: String
+  - bandaHertziana: String
+}
+
+class Programa {
+  - nombre: String
+  - responsable: String
+  - diaSemana: String
+  - horaInicio: String
+  - duracionMinutos: int
+}
+
+class Publicidad {
+  - duracionSegundosSemana: int
+  - precioPorSegundo: double
+  - costoTotal: double
+}
+
+class ContratoPublicidad {
+  - numeroContrato: String
+  - duracionSemanas: int
+  - importeTotal: double
+}
+
+class Patrocinador {
+  - identificador: String
+  - nombre: String
+}
+
+class Emision {
+  - diaSemana: String
+  - horaInicio: String
+  - duracionMinutos: int
+}
+
+' Relaciones entre clases
+
+EmpresaMedios "1" --> "0..*" CadenaRadio : controla
+CadenaRadio "1" --> "1..*" Emisora : agrupa
+CadenaRadio "1" --> "1" EmpresaMedios : pertenece a
+CadenaRadio --> Emisora : sedeCentral
+
+Emisora --> Programa : transmite
+Programa --> Publicidad : contiene
+Programa --> Emision : tiene
+
+Programa --> Emisora : local
+Programa --> CadenaRadio : enCadena
+
+Publicidad --> Programa : seEmiteEn
+Publicidad --> ContratoPublicidad : asociadaA
+
+ContratoPublicidad --> Publicidad : incluye
+ContratoPublicidad --> Patrocinador : firmadoPor
+Patrocinador --> ContratoPublicidad : posee
+
+Emision --> Programa : correspondeA
+
+@enduml
